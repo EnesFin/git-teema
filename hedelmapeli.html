@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Hedelmäpeli - Enes KOC</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta name="robots" content="noindex">
+  <meta name="googlebot" content="noindex">
+  <link href='https://fonts.googleapis.com/css?family=Raleway:400,800,300' rel='stylesheet' type='text/css'>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<style>
+  p {
+    color: aliceblue;
+    font-size: 40px;
+  }
+
+  label {
+    color: aliceblue;
+    font-size: 20px;
+  }
+
+  #btn,
+  #gamerBtn {
+    cursor: pointer;
+  }
+
+  body {
+    background-color: rgb(40, 65, 1);
+  }
+
+  .container {
+    margin: 0 auto;
+    margin-top: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .row {
+    display: flex;
+  }
+
+  .column {
+    flex: 1;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+
+  @media (min-width: 576px) {
+    .container {
+      width: 90%;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      width: 750px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .container {
+      width: 900px;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .container {
+      width: 1180px;
+    }
+  }
+</style>
+
+<body>
+  <div class="container">
+    <img src="hedelma-img/logo.png" alt="..." style="height: 180px; margin-bottom: -50px;" /><br>
+    <table style="margin-bottom: -80px;">
+      <tr>
+        <td>
+          <img src="hedelma-img/1eu.png" onclick="data(1)" style="height: 80px;"
+            alt="..." />
+          <img src="hedelma-img/2eu.png" onclick="data(2)" style="height: 80px;"
+            alt="..." />
+          <img src="hedelma-img/5eu.png" onclick="data(5)" style="height: 80px;"
+            alt="..." />
+          <div class="row" style="margin-bottom: -80px;">
+            <p>Saldo: <span id="saldo">100</span>€</p>
+            <h2 style="color:yellow" id="gain"></h2>
+          </div>
+          <div class="row" >
+            <p>Panos: <input type="number" id="panos" min="1" value="1">€</p>
+          </div>
+        </td>
+        <td style=" padding: 20px;">
+          <img src="hedelma-img/pisteet.png" style="height: 270px;" alt="..." />
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td style="padding: 20px;">
+          <div class="row" style="margin-bottom: -100px;">
+            <div class="column">
+              <p id="rullat" style="display: inline-block;">
+                <img src="hedelma-img/7.png" style="height: 200px; " alt="..." />
+                <img src="hedelma-img/7.png" style="height: 200px; " alt="..." />
+                <img src="hedelma-img/7.png" style="height: 200px; " alt="..." />
+                <img src="hedelma-img/7.png" style="height: 200px; " alt="..." />
+              </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="column" style="display: inline-block;">
+              <p>
+                <img src="hedelma-img/unlocked.png" onclick="lukitseRulla(1)" id="luki1" style="height: 200px; "
+                  alt="..." />
+                <img src="hedelma-img/unlocked.png" onclick="lukitseRulla(2)" id="luki2" style="height: 200px; "
+                  alt="..." />
+                <img src="hedelma-img/unlocked.png" onclick="lukitseRulla(3)" id="luki3" style="height: 200px; "
+                  alt="..." />
+                <img src="hedelma-img/unlocked.png" onclick="lukitseRulla(4)" id="luki4" style="height: 200px; "
+                  alt="..." />
+              </p>
+            </div>
+          </div>
+        </td>
+        <td style="padding: 20px;">
+          <img src="hedelma-img/handleOff.png" onclick="pyorita()" id="btn" alt="..." />
+        </td>
+      </tr>
+    </table>
+  </div>
+  </div>
+
+  <script>
+    var saldo = 100;
+    var kuvat = ['<img src="hedelma-img/7.png" style="height: 200px; " alt="..." />',
+      '<img src="hedelma-img/wam.png" style="height: 200px; " alt="..." />',
+      '<img src="hedelma-img/apple.png" style="height: 200px; " alt="..." />',
+      '<img src="hedelma-img/kirsk.png" style="height: 200px; " alt="..." />',
+      '<img src="hedelma-img/paar.png" style="height: 200px; " alt="..." />'];
+    var rullat = [0, 0, 0, 0];
+    var lukitutRullat = [false, false, false, false];
+    var firstHandle = 0;
+    var lukittu = 0;
+
+
+    function arvoKuva() {
+      return kuvat[Math.floor(Math.random() * kuvat.length)];
+    }
+
+
+
+function lukittuHae(arvo) {
+    for (var i = 0; i < arvo.length; i++) {
+        if (arvo[i] === true) {
+            lukittu += 1;
+            break;
+        }
+    }
+    return lukittu;
+}
+
+
+    function lukitseRulla(rulla) {
+      if (firstHandle > 0) {
+        lukitutRullat[rulla - 1] = !lukitutRullat[rulla - 1];
+        var img = document.getElementById('luki' + rulla);
+        var audio = new Audio('hedelma-img/lock.mp3');
+        audio.play();
+        if (lukitutRullat[rulla - 1]) {
+          img.src = 'hedelma-img/locked.png';
+        } else {
+          img.src = 'hedelma-img/unlocked.png';
+        }
+      } else {
+        document.getElementById('gain').innerHTML = "Aloita peli ensin!";
+      };
+
+    }
+
+    function pyorita() {
+      lukittuHae(lukitutRullat);
+      firstHandle += 1;
+      var btn = document.getElementById('btn');
+      btn.src = 'hedelma-img/handleOn.png';
+      setTimeout(function () {
+        btn.src = 'hedelma-img/handleOff.png';
+      }, 200);
+      var panos = document.getElementById('panos').value;
+      if (saldo < panos) {
+        document.getElementById('gain').innerHTML = "Ei tarpeeksi saldoa!";
+        return;
+      }else if(panos < 0){
+        document.getElementById('gain').innerHTML = "Minimissään 1€!";
+        return;
+      }
+      saldo -= panos;
+      document.getElementById('saldo').innerHTML = saldo;
+
+      for (var i = 0; i < rullat.length; i++) {
+        if (!lukitutRullat[i]) {
+          rullat[i] = arvoKuva();
+        }
+      }
+
+      document.getElementById('rullat').innerHTML = rullat.join(' ');
+      var voitto = laskeVoitto(panos);
+      if (voitto > 0) {
+        saldo += voitto;
+        document.getElementById('saldo').innerHTML = saldo;
+        document.getElementById('gain').innerHTML = 'Voitit ' + voitto + '€!';
+        var audio = new Audio('hedelma-img/gain.mp3');
+        audio.play();
+      } else {
+        document.getElementById('gain').innerHTML = '';
+      }
+      var audio = new Audio('hedelma-img/handle.mp3');
+      audio.play();
+      if (lukittu>0) {
+        for (var j = 0; j < lukitutRullat.length; j++){
+          lukitutRullat[j] = false;
+          document.getElementById('luki' + (j+1)).src = 'hedelma-img/unlocked.png';
+        }
+        lukittu=0;
+        return lukitutRullat;
+      }
+    }
+
+    function laskeVoitto(panos) {
+      var voitto = 0;
+      if (rullat.every(x => x === '<img src="hedelma-img/7.png" style="height: 200px; " alt="..." />')) voitto = 10 * panos;
+      else if (rullat.every(x => x === '<img src="hedelma-img/apple.png" style="height: 200px; " alt="..." />')) voitto = 6 * panos;
+      else if (rullat.every(x => x === '<img src="hedelma-img/wam.png" style="height: 200px; " alt="..." />')) voitto = 5 * panos;
+      else if (rullat.every(x => x === '<img src="hedelma-img/paar.png" style="height: 200px; " alt="..." />')) voitto = 4 * panos;
+      else if (rullat.every(x => x === '<img src="hedelma-img/kirsk.png" style="height: 200px; " alt="..." />')) voitto = 3 * panos;
+      else if (rullat.filter(x => x === '<img src="hedelma-img/7.png" style="height: 200px; " alt="..." />').length >= 3) voitto = 5 * panos;
+      return voitto;
+    }
+  function data(i){
+    document.getElementById('panos').value = i;
+  }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kaverilista -Enes KOC</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<meta name="robots" content="noindex">
+	<meta name="googlebot" content="noindex">
+</head>
+<body>
+	<h1>Kaverilista</h1>
+	<label for="kaveri">Syötä nimi:</label><br>
+	<input type="text" id="kaveri">
+	<button onclick="add()">Lisää Kaverä</button>
+	<button onclick="del()">Poista Kaveri</button>
+	<button onclick="listener()">Järjestä Kaverit</button>
+	<div id="kaverit"></div>
+	<script>
+		var kaverit = [];
+        for (var i = 0; i < 10; i++) {
+			var kaveri = prompt("Näkyviin tulee 10 henkilön luettelo. Jos et halua kirjautua sisään, kirjoita 'peruuta'! " + (i+1) + "- Kirjoita ystäväsi nimi:" );
+            if (kaveri=="peruuta" || kaveri == null ){
+				break;
+			} else if (kaveri == "") {
+				alert("Ei voi olla tyhjä!");
+				i--;
+			} else {
+				kaverit.push(kaveri);
+			}
+		}
+		document.write("<h3>Versio 1</h3><ol>");
+		for (var i = 0; i < kaverit.length; i++) {
+			document.write("<li>" + kaverit[i] + "</li>");
+		}
+		document.write("</ol>");
+		function add() {
+			var kaveri = document.getElementById("kaveri").value;
+			kaverit.push(kaveri);
+			document.getElementById("kaveri").value = "";
+		}
+		function del() {
+			var kaveri = document.getElementById("kaveri").value;
+			var index = kaverit.indexOf(kaveri);
+			if (index > -1) {
+				kaverit.splice(index, 1);
+			}
+			document.getElementById("kaveri").value = "";
+		}
+		function listener() {
+			document.getElementById("kaverit").innerHTML = "<h3>Versio 2</h3>";
+			for (var i = 0; i < kaverit.length; i++) {
+				document.getElementById("kaverit").innerHTML +=kaverit[i]+"<br>";
+			}
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sika-noppapeli - Enes KOC</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta name="robots" content="noindex">
+  <meta name="googlebot" content="noindex">
+  <link href='https://fonts.googleapis.com/css?family=Raleway:400,800,300' rel='stylesheet' type='text/css'>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<style>
+  p {
+    color: aliceblue;
+    font-size: 40px;
+  }
+
+  label {
+    color: aliceblue;
+    font-size: 20px;
+  }
+
+  #btn,
+  #gamerBtn {
+    cursor: pointer;
+  }
+
+  body {
+    background-color: #3f200a;
+  }
+
+  .container {
+    margin: 0 auto;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  @media (min-width: 576px) {
+    .container {
+      width: 90%;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .container {
+      width: 750px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .container {
+      width: 900px;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .container {
+      width: 1180px;
+    }
+  }
+</style>
+
+<body>
+  <div class="container">
+    <img src="dice-img/logo.png" alt="..." /><br>
+
+    <section id="alku" style="display: block;">
+      <br>
+      <Label>Syötä Pistemäärää: </Label><input type="number" id="pistemaara">
+      <br><br>
+      <p id="demo2" style="color:yellow"></p>
+      <input type="radio" id="vehicle1" name="game" value="yksi" checked onclick="myFunction ()">
+      <label for="vehicle1"> Yhdellä nopalla</label><br>
+      <input type="radio" id="vehicle2" name="game" value="kaksi" onclick="myFunction ()">
+      <label for="vehicle2"> Kahdella nopalla</label><br>
+      <br>
+      <img src="dice-img/start.png" style="height: 280px;" onclick="start()" id="startBtn" alt="..." />
+    </section>
+
+    <section id="main" style="display: none;">
+      <div class="row">
+        <h3 style="color:rgb(0, 255, 42)" id="tavoite"></h3>
+        <h3 style="color:yellow" id="taulu">Tulostaulu [Pelaaja 1=0] [Pelaaja 2=0]</h3>
+      </div>
+      <div class="row">
+        <div class="column">
+          <img src="dice-img/1.png" id="dice" style="height: 140px; display:inline-block;" alt="..." />
+          <img src="dice-img/1.png" id="dice2" style="height: 140px; display: none;" alt="..." />
+        </div>
+      </div>
+      <br><br>
+      <img src="dice-img/gamer1.png" style="height: 60px;" id="gamerico" alt="..." />
+      <img src="dice-img/button1.png" style="height: 100px;" onclick="heitaNoppaa()" id="btn" alt="..." />
+      <img src="dice-img/gameBtn.png" style="height: 80px;" title="Siirry seuraavaan pelaajaan!" id="gamerBtn"
+        onclick="changeGamer()" alt="..." />
+    </section>
+    <h2 id="tauluWin" style="display: none;"></h2>
+    <p id="demo"></p>
+    <center><img src="dice-img/again.png" style="height: 50px; display: none;" onclick="again()" id="againBtn"
+        alt="..." />
+    </center>
+  </div>
+  
+  <script>
+    var pisteet1 = 0;
+    var pisteet2 = 0;
+    var pelaaja1 = 0;
+    var pelaaja2 = 0;
+
+    function start() {
+      var pistemaara = document.getElementById("pistemaara").value;
+      var alku = document.getElementById("alku");
+      var tavoite = document.getElementById("tavoite");
+      var main = document.getElementById("main");
+      var againBtn = document.getElementById("againBtn");
+      if (pistemaara.trim() !== "") {
+        alku.style.display = "none";
+        main.style.display = "block";
+        againBtn.style.display = "block";
+        tavoite.innerHTML = "Tavoite=<b>" + pistemaara + "</b>";
+      } else {
+        demo2.innerHTML = "Anna tavoite pisteet ensin!";
+      };
+    }
+    var i = 2;
+
+    function changeGamer() {
+      var audio = new Audio('dice-img/change.mp3');
+      audio.play();
+      var gamerico = document.getElementById("gamerico");
+      if (i % 2 == 0) {
+        gamerico.src = "dice-img/gamer2.png";
+        i += 1;
+        return i;
+      } else {
+        gamerico.src = "dice-img/gamer1.png";
+        i += 1;
+        return i;
+      };
+
+    }
+
+
+    function again() {
+      var taulu = document.getElementById("taulu");
+      pisteet1 = 0;
+      pisteet2 = 0;
+      document.getElementById("alku").style.display = "block";
+      document.getElementById("main").style.display = "none";
+      document.getElementById("tauluWin").style.display = "none";
+      document.getElementById("againBtn").style.display = "none";
+      document.getElementById("demo").innerHTML = "";
+      taulu.innerHTML = "Tulostaulu [Pelaaja 1=" + pisteet1 + "] [Pelaaja 2=" + pisteet2 + "]";
+    }
+
+    function myFunction() {
+      var radioBtn = document.getElementById("vehicle2").checked;
+
+      var dice2 = document.getElementById("dice2");
+      var demo = document.getElementById("demo");
+      if (radioBtn == true) {
+        dice2.style = "height: 140px; display:inline-block";
+        pisteet = 0;
+        demo.innerHTML = "";
+      } else {
+        dice2.style = "height: 140px; display: none;";
+        pisteet = 0;
+        demo.innerHTML = "";
+      };
+    }
+    function heitaNoppaa() {
+      var rule = Boolean;
+      var pistemaara = parseFloat(document.getElementById("pistemaara").value);
+      var btn = document.getElementById('btn');
+      var demo = document.getElementById("demo");
+      var taulu = document.getElementById("taulu");
+      var tauluWin = document.getElementById("tauluWin");
+      var dice = document.getElementById('dice');
+      var dice2 = document.getElementById('dice2');
+      var main2 = document.getElementById("main");
+      var radioBtn = document.getElementById("vehicle2").checked;
+      var noppa = Math.floor(Math.random() * 6) + 1;
+      var noppa2 = Math.floor(Math.random() * 6) + 1;
+      btn.src = 'dice-img/button2.png';
+      var audio = new Audio('dice-img/click.mp3');
+      audio.play();
+
+      setTimeout(function () {
+        btn.src = 'dice-img/button1.png';
+      }, 200);
+
+      if (noppa === 1) {
+        dice.src = 'dice-img/1.png';
+      } else if (noppa === 2) {
+        dice.src = 'dice-img/2.png';
+      } else if (noppa === 3) {
+        dice.src = 'dice-img/3.png';
+      } else if (noppa === 4) {
+        dice.src = 'dice-img/4.png';
+      } else if (noppa === 5) {
+        dice.src = 'dice-img/5.png';
+      } else {
+        dice.src = 'dice-img/6.png';
+      }
+
+      if (noppa2 === 1) {
+        dice2.src = 'dice-img/1.png';
+      } else if (noppa2 === 2) {
+        dice2.src = 'dice-img/2.png';
+      } else if (noppa2 === 3) {
+        dice2.src = 'dice-img/3.png';
+      } else if (noppa2 === 4) {
+        dice2.src = 'dice-img/4.png';
+      } else if (noppa2 === 5) {
+        dice2.src = 'dice-img/5.png';
+      } else {
+        dice2.src = 'dice-img/6.png';
+      }
+
+
+
+      if (noppa === 1 && radioBtn == false) {
+        demo.innerHTML = "Heitit ykkösen! Pisteet nollataan.";
+        var audio = new Audio('dice-img/nolla.mp3');
+        audio.play();
+        if (i % 2 == 0) {
+          pisteet1 = 0;
+        } else {
+          pisteet2 = 0;
+        };
+        taulu.innerHTML = "Tulostaulu [Pelaaja 1=" + pisteet1 + "] [Pelaaja 2=" + pisteet2 + "]";
+        changeGamer();
+      } else {
+        if (radioBtn) {
+          if (i % 2 == 0) {
+            if (noppa == noppa2) {
+              var audio = new Audio('dice-img/double.mp3');
+              audio.play();
+              if (noppa == 1 && noppa2 == 1 && rule == false) {
+                pisteet1 += (noppa + noppa2) * 2 + 25;
+                rule = true;
+              } else {
+                if (!rule) {
+                  changeGamer();
+                };
+                pisteet1 += (noppa + noppa2) * 2;
+              }
+            } else {
+              pisteet1 += noppa + noppa2;
+            }
+
+          } else {
+            if (noppa == noppa2) {
+              var audio = new Audio('dice-img/double.mp3');
+              audio.play();
+              if (noppa == 1 && noppa2 == 1 && rule == false) {
+                pisteet2 += (noppa + noppa2) * 2 + 25;
+                rule = true;
+              } else {
+                if (!rule) {
+                  changeGamer();
+                };
+                pisteet2 += (noppa + noppa2) * 2;
+              }
+            } else {
+              pisteet2 += noppa + noppa2;
+            }
+          };
+        } else {
+          if (i % 2 == 0) {
+            pisteet1 += noppa;
+          } else {
+            pisteet2 += noppa;
+          };
+        };
+
+
+        taulu.innerHTML = "Tulostaulu [Pelaaja 1=" + pisteet1 + "] [Pelaaja 2=" + pisteet2 + "]";
+        pelaaja1 = pisteet1;
+        pelaaja2 = pisteet2;
+        if (pistemaara < pisteet1 || pistemaara < pisteet2) {
+          demo.innerHTML = "Ylitit tavoitteen!! Pisteet nollataan.";
+          var audio = new Audio('dice-img/nolla.mp3');
+          audio.play();
+          if (i % 2 == 0) {
+            pisteet1 = 0;
+          } else {
+            pisteet2 = 0;
+          };
+          taulu.innerHTML = "Tulostaulu [Pelaaja 1=" + pisteet1 + "] [Pelaaja 2=" + pisteet2 + "]";
+          changeGamer();
+        };
+
+        if (pistemaara == pisteet1 || pistemaara == pisteet2) {
+          demo.innerHTML = '<img src="dice-img/win.gif" alt="..."/>';
+          var audio = new Audio('dice-img/firework.mp3');
+          audio.play();
+          tauluWin.style = "color:yellow; display: block;";
+          if (pistemaara == pisteet1) {
+            tauluWin.innerHTML = "-Pelaaja 1 voitti!-";
+          } else {
+            tauluWin.innerHTML = "-Pelaaja 2 voitti!-";
+          };
+          main2.style = "display: none;";
+          pisteet1 = 0;
+          taulu.innerHTML = "Tulostaulu [Pelaaja 1=" + pisteet1 + "] [Pelaaja 2=" + pisteet2 + "]";
+        };
+      }
+    }
+
+  </script>
+</body>
+
+</html>

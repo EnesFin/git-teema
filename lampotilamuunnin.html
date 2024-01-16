@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lämpötilamuunnin - Enes KOC</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<meta name="robots" content="noindex">
+	<meta name="googlebot" content="noindex">
+  <script>
+    function convertTemperature() {
+      var fUnit = document.getElementById("fUnit").value;
+      var temperature = parseFloat(document.getElementById("temperature").value);
+      var decimals = parseInt(document.querySelector('input[name="decimals"]:checked').value);
+      var resultElement = document.getElementById("result");
+
+      if (isNaN(temperature)) {
+        resultElement.innerHTML = "Virhe: Syötä kelvin-arvo numeroina.";
+        return;
+      }
+
+      if (temperature < -273.15) {
+        resultElement.innerHTML = "Huomioi: Lämpötila ei voi olla pienempi kuin absoluuttinen nollapiste (-273,15 Celsius).";
+        return;
+      }
+
+      var convertedTemperature = 0;
+
+      if (fUnit === "celsius") {
+        convertedTemperature = (temperature * 9 / 5) + 32;
+      } else if (fUnit === "fahrenheit") {
+        convertedTemperature = (temperature - 32) * 5 / 9;
+      }
+      resultElement.innerHTML = "Vastaus: " + convertedTemperature.toFixed(decimals);
+    }
+  </script>
+</head>
+<body>
+  <h1>Lämpötilamuunnin</h1>
+  <p>
+    <select id="fUnit">
+      <option value="celsius">Celsius -> Fahrenheit</option>
+      <option value="fahrenheit">Fahrenheit -> Celsius</option>
+    </select>
+    <br>
+    Syötä Lämpötila: <br><input type="text" id="temperature">
+    <br>
+    Desimaalit: 
+    <input type="radio" name="decimals" value="1" checked> 1
+    <input type="radio" name="decimals" value="2"> 2
+    <input type="radio" name="decimals" value="3"> 3
+    <br>
+    <button onclick="convertTemperature()">Muunna</button>
+  </p>
+  <div id="result"></div>
+</body>
+</html>

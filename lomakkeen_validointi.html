@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lämpötilamuunnin - Enes KOC</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<meta name="robots" content="noindex">
+	<meta name="googlebot" content="noindex">
+</head>
+<body>
+  <h1>Rekisteröitymislomake</h1>
+  <form id="registrationForm">
+    <label for="userId">Käyttäjä ID:</label>
+    <input type="text" id="userId" name="userId"><br><br>
+    
+    <label for="password">Salasana:</label>
+    <input type="password" id="password" name="password"><br><br>
+    
+    <label for="name">Nimi:</label>
+    <input type="text" id="name" name="name"><br><br>
+    
+    <label for="address">Osoite:</label>
+    <input type="text" id="address" name="address"><br><br>
+    
+    <label for="country">Maa:</label>
+    <select id="country" name="country">
+      <option value="" selected>(Valitse maa)</option>
+      <option value="Finland">Suomi</option>
+      <option value="Other">Muu kuin Suomi</option>
+    </select><br><br>
+    
+    <label for="zipCode">Postinumero:</label>
+    <input type="text" id="zipCode" name="zipCode"><br><br>
+    
+    <label for="email">Sähköposti:</label>
+    <input type="email" id="email" name="email"><br><br>
+    
+    <label>Sukupuoli:</label>
+    <input type="radio" id="male" name="gender" value="male">
+    <label for="male">Mies</label>
+    <input type="radio" id="female" name="gender" value="female">
+    <label for="female">Nainen</label><br><br>
+    
+    <label>Kieli:</label>
+    <input type="radio" id="finnish" name="language" value="Finnish">
+    <label for="finnish">Suomi</label>
+    <input type="radio" id="otherLanguage" name="language" value="Other">
+    <label for="otherLanguage">Muu kuin suomi</label><br><br>
+    
+    <label for="additionalInfo">Lisätietoja:</label><br>
+    <textarea id="additionalInfo" name="additionalInfo" rows="4" cols="50"></textarea>
+    <br>
+    <input type="submit" value="Lähetä">
+  </form>
+  <script>
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+      event.preventDefault(); 
+      const userId = document.getElementById('userId').value;
+      const password = document.getElementById('password').value;
+      const name = document.getElementById('name').value;
+      const address = document.getElementById('address').value;
+      const country = document.getElementById('country').value;
+      const zipCode = document.getElementById('zipCode').value;
+      const email = document.getElementById('email').value;
+      const gender = document.querySelector('input[name="gender"]:checked');
+      const language = document.querySelector('input[name="language"]:checked');
+      const additionalInfo = document.getElementById('additionalInfo').value;
+      var resultElement = document.getElementById("result");
+      
+      if (userId.length < 6 || password === '' || name === '' || address === '' || country === '' || zipCode.length !== 5 || email === '' || !gender || !language) {
+        alert('Tarkista lomakkeen tiedot!');
+        resultElement.innerHTML = '<p>-Käyttäjä ID pitää olla vähintään 6 merkkiä pitkä <br>-Postinumerossa pitää olla 5 numeroa</p>';
+        return;
+      }
+      alert('Lomake lähetetty onnistuneesti!');
+      resultElement.innerHTML =" ";
+    });
+  </script>
+  <div id="result" style="color:red;"></div>
+</body>
+</html>
